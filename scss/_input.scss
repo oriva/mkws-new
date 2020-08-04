@@ -1,0 +1,88 @@
+input {
+  &::-webkit-outer-spin-button, &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    -moz-appearance:    none;
+    margin:             0;
+  }
+}
+
+.input-group {
+  position:      relative;
+  input {
+    display:          block;
+    margin:           10px auto;
+    background-color: transparent;
+    padding:          10px 5px;
+    width:            98%;
+    border:           none;
+    border-radius:    0;
+    border-bottom:    1px solid #9E9E9E;
+    color:            transparent;
+    font-size:        1em;
+    font-weight:      600;
+    &:focus-within ~ label, &:not(:placeholder-shown) ~ label {
+      top:                      -15px;
+      -webkit-transform-origin: left center;
+      transform-origin:         left center;
+      -webkit-transform:        scale(0.6);
+      transform:                scale(0.6);
+    }
+    &:focus, &:not(:placeholder-shown) {
+      color: var(--second-color);
+    }
+    &::-webkit-input-placeholder {
+      color: transparent;
+    }
+    &:-moz-placeholder {
+      color: transparent;
+    }
+    &::-moz-placeholder {
+      color: transparent;
+    }
+    &:-ms-input-placeholder {
+      color: transparent;
+    }
+  }
+  label {
+    color:                 #9E9E9E;
+    position:              absolute;
+    pointer-events:        none;
+    left:                  5px;
+    top:                   10px;
+    -webkit-transition:    0.3s ease all;
+    transition:            0.3s ease all;
+    -webkit-touch-callout: none;
+    -webkit-user-select:   none;
+    -moz-user-select:      none;
+    -ms-user-select:       none;
+    user-select:           none;
+  }
+  .bar {
+    position: relative;
+    display:  block;
+    width:    100%;
+    &::before {
+      left: 50%;
+    }
+    &::after {
+      right: 50%;
+    }
+    &::before, &::after {
+      content:            "";
+      height:             1px;
+      width:              0;
+      bottom:             10px;
+      position:           absolute;
+      background:         #000;
+      -webkit-transition: 0.3s ease all;
+      transition:         0.3s ease all;
+    }
+  }
+  input:focus ~ .bar:before,
+  input:focus ~ .bar:after {
+    width: 50%;
+  }
+  input:not(:placeholder-shown) ~ .bar:before, input:not(:placeholder-shown) ~ .bar:after {
+    width: 50%;
+  }
+}
