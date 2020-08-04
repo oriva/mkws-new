@@ -53,39 +53,39 @@ const cycleRange = ((num) => {
 });
 
 // Фильтрация по городам
-const filterCities = debounce(function () {
-    const inpWord = this.value;
-    let allLi = $(this.nextElementSibling).find('li');
-    const allParent = $(this.nextElementSibling).find('li.advert-popup__parent');
-    if (this.value !== '') {
-        allLi.css('display', function () {
-            let classRes = '';
-            const hasWord = this.querySelector('input').value.toLowerCase().indexOf(inpWord.toLowerCase());
-            if (hasWord !== -1) {
-                classRes = 'block';
-            } else {
-                classRes = 'none'
-            }
-            const liParent = this.parentElement;
-            if(liParent.previousElementSibling) {
-                if (liParent.previousElementSibling.classList.contains('advert-popup__parent') && classRes === 'block') {
-                    liParent.previousElementSibling.style.display = 'block';
-                    liParent.previousElementSibling.classList.add('show');
-                    liParent.style.display = 'block';
-                }
-            }
-            return classRes;
-        });
-    } else {
-        allLi.css('display', 'block');
-        allParent.next().css('display', 'none');
-    }
-}, 1000);
+// const filterCities = debounce(function () {
+//     const inpWord = this.value;
+//     let allLi = $(this.nextElementSibling).find('li');
+//     const allParent = $(this.nextElementSibling).find('li.advert-popup__parent');
+//     if (this.value !== '') {
+//         allLi.css('display', function () {
+//             let classRes = '';
+//             const hasWord = this.querySelector('input').value.toLowerCase().indexOf(inpWord.toLowerCase());
+//             if (hasWord !== -1) {
+//                 classRes = 'block';
+//             } else {
+//                 classRes = 'none'
+//             }
+//             const liParent = this.parentElement;
+//             if(liParent.previousElementSibling) {
+//                 if (liParent.previousElementSibling.classList.contains('advert-popup__parent') && classRes === 'block') {
+//                     liParent.previousElementSibling.style.display = 'block';
+//                     liParent.previousElementSibling.classList.add('show');
+//                     liParent.style.display = 'block';
+//                 }
+//             }
+//             return classRes;
+//         });
+//     } else {
+//         allLi.css('display', 'block');
+//         allParent.next().css('display', 'none');
+//     }
+// }, 1000);
 
 const printCities = ((modal, cityArr) => {
     modal.classList.add('advert-popup_load');
     const contElem = modal.querySelector('.advert-popup__cont');
-    contElem.previousElementSibling.addEventListener('keyup', filterCities);
+    // contElem.previousElementSibling.addEventListener('keyup', filterCities);
     let domElems = document.createElement('ul');
     domElems.classList.add('advert-popup__ul');
     const printFn = ((thisParent, arr) => {
