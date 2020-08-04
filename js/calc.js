@@ -9,35 +9,27 @@ let numElem = 1;
 let budget = 0;
 let priceOptions = 0;
 
-function throttle(func, ms) {
+function debounce(func, wait, immediate) {
+    let timeout;
 
-    let isThrottled = false,
-        savedArgs,
-        savedThis;
+    return function executedFunction() {
+        const context = this;
+        const args = arguments;
 
-    function wrapper() {
+        const later = function() {
+            timeout = null;
+            if (!immediate) func.apply(context, args);
+        };
 
-        if (isThrottled) { // (2)
-            savedArgs = arguments;
-            savedThis = this;
-            return;
-        }
+        const callNow = immediate && !timeout;
 
-        func.apply(this, arguments); // (1)
+        clearTimeout(timeout);
 
-        isThrottled = true;
+        timeout = setTimeout(later, wait);
 
-        setTimeout(function() {
-            isThrottled = false; // (3)
-            if (savedArgs) {
-                wrapper.apply(savedThis, savedArgs);
-                savedArgs = savedThis = null;
-            }
-        }, ms);
-    }
-
-    return wrapper;
-}
+        if (callNow) func.apply(context, args);
+    };
+};
 
 const getPriceOptions = (()=>{
     priceOptions = 0;
@@ -61,15 +53,15 @@ const cycleRange = ((num) => {
 });
 
 // Фильтрация по городам
-const filterCities = (function () {
+const filterCities = debounce(function () {
     const inpWord = this.value;
     let allLi = $(this.nextElementSibling).find('li');
     const allParent = $(this.nextElementSibling).find('li.advert-popup__parent');
     if (this.value !== '') {
         allLi.css('display', function () {
             let classRes = '';
-            const hasWord = this.querySelector('input').value.includes(inpWord);
-            if (hasWord === true) {
+            const hasWord = this.querySelector('input').value.toLowerCase().indexOf(inpWord.toLowerCase());
+            if (hasWord !== -1) {
                 classRes = 'block';
             } else {
                 classRes = 'none'
@@ -88,12 +80,12 @@ const filterCities = (function () {
         allLi.css('display', 'block');
         allParent.next().css('display', 'none');
     }
-});
+}, 1000);
 
 const printCities = ((modal, cityArr) => {
     modal.classList.add('advert-popup_load');
     const contElem = modal.querySelector('.advert-popup__cont');
-    contElem.previousElementSibling.addEventListener('keyup', throttle(filterCities, 1000));
+    contElem.previousElementSibling.addEventListener('keyup', filterCities);
     let domElems = document.createElement('ul');
     domElems.classList.add('advert-popup__ul');
     const printFn = ((thisParent, arr) => {
