@@ -8,7 +8,7 @@ let numElem = 1;
 let budget = 0;
 let priceOptions = 0;
 
-const testBudgetSev = ((rs, theme)=>{
+const testBudgetSev = ((rs, theme) => {
     console.log(
         'Кол-во рс: ' +
         rs +
@@ -23,13 +23,20 @@ const testBudgetSev = ((rs, theme)=>{
     );
 });
 
-const testBudgetDev = ((rs, theme)=>{
+const testBudgetDev = ((rs, theme) => {
     console.log('Кол-во рс: ' +
         rs +
         '; тематик: ' +
         theme +
         '; Стоимость разработки: ' +
         Math.round(((1 - (theme - 1) * 0.1) * theme * rs * 25000)));
+});
+
+const changeBudget = ((valBudget) => {
+    if (valBudget > 150)
+        budget = valBudget * 1000;
+    else
+        budget = 0;
 });
 
 function debounce(func, wait, immediate) {
@@ -73,6 +80,25 @@ const cycleRange = ((num) => {
         elem50.get(z).classList.remove('advert-ability_active');
         elem50.get(z).querySelector('input').checked = false;
     }
+});
+
+// Изменение текста бюджета
+const budgetChangeText = ((value) => {
+    advPrice.removeClass('advert-price_infinity');
+    if (/^[0-9]+$/.test(value)) {
+        cycleRange((value - 50) / 50);
+        $('.advert-graph__price').html(value + ' 000 ₽');
+        changeBudget(value);
+    } else if (value === '1 млн') {
+        elem50.addClass('advert-ability_active');
+        $('.advert-price .advert-ability[data-need] input').prop('checked', true);
+        $('.advert-graph__price').html('1 000 000 ₽');
+        budget = 1000000;
+    } else {
+        advPrice.addClass('advert-price_infinity');
+        $('.advert-graph__price').html('Не ограничен');
+    }
+    getPriceSev();
 });
 
 //Фильтрация по городам
@@ -181,7 +207,7 @@ const getPriceSev = (() => {
     });
     for (let key in obCount) {
         if (obCount[key] > 0) {
-            testBudgetSev(obCount[key], key);
+            // testBudgetSev(obCount[key], key);
             price += Math.round(((1 - (key - 1) * 0.1) * key * obCount[key] * 20000) + (priceOptions * key) - (0.01 * budget))
         }
     }
@@ -215,34 +241,20 @@ $(".js-range-slider").ionRangeSlider({
         '∞',
     ],
     onChange: function (data) {
-        advPrice.removeClass('advert-price_infinity');
-        if (typeof data.from_value === 'number') {
-            cycleRange((data.from_value - 50) / 50);
-            $('.advert-graph__price').html(data.from_value + ' 000 ₽');
-            if (data.from_value > 150)
-                budget = data.from_value * 1000;
-            else
-                budget = 0;
-        } else if (data.from_value === '1 млн') {
-            elem50.addClass('advert-ability_active');
-            $('.advert-price .advert-ability[data-need] input').prop('checked', true);
-            $('.advert-graph__price').html('1 000 000 ₽');
-            budget = 1000000;
-        } else {
-            advPrice.addClass('advert-price_infinity');
-            $('.advert-graph__price').html('Не ограничен');
-        }
-        getPriceSev();
+        budgetChangeText(data.from_value);
     },
     onStart: function (data) {
-        if (data.from_value > 150)
-            budget = data.from_value * 1000;
-        else
-            budget = 0;
+        changeBudget(data.from_value);
     }
 });
 $('#advert-add-theme').on('click', () => {
     numElem++;
+    $(".js-range-slider").data("ionRangeSlider").update({from_min: numElem - 1});
+    const valueRange = $(".js-range-slider").data("ionRangeSlider").input.value;
+    changeBudget(valueRange);
+    budgetChangeText(valueRange);
+    console.log(valueRange);
+
     let collectElem = document.createElement('div');
     collectElem.classList.add('advert-collection');
     collectElem.innerHTML = '' +
@@ -306,6 +318,7 @@ $('#advert-add-theme').on('click', () => {
 $('.advert-calc').on('click', (e) => {
     if (e.target.classList.contains('advert-delete-js') && e.target.closest('.can-delete')) {
         numElem--;
+        $(".js-range-slider").data("ionRangeSlider").update({from_min: numElem - 1});
         e.target.closest('.advert-collections').removeChild(e.target.closest('.advert-collection'));
         if ($('.advert-collection').length === 1) {
             $('.advert-collections').removeClass('can-delete');
@@ -313,6 +326,7 @@ $('.advert-calc').on('click', (e) => {
         getPriceDev();
         getPriceSev();
     }
+
     // минимум 1 инпут
     if (e.target.closest('.advert-checkbox')) {
         if (e.target.closest('.advert-calc__checkbox').querySelectorAll('input:checked').length === 1 && e.target.closest('.advert-checkbox').querySelector('input').checked) {
@@ -338,6 +352,8 @@ $('.advert-calc').on('click', (e) => {
             $(e.target.parentNode.nextElementSibling).slideToggle();
         }
     }
+
+    // Показать попап регионы
     if (e.target.classList.contains('advert-city-block__city')) {
         let elem = e.target.nextElementSibling;
         const evDoc = ((e) => {
