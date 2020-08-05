@@ -34,7 +34,7 @@ const testBudgetDev = ((rs, theme) => {
 
 const changeBudget = ((valBudget) => {
     if (valBudget > 150)
-        budget = valBudget * 1000;
+        budget = parseInt(valBudget) * 1000;
     else
         budget = 0;
 });
@@ -86,7 +86,7 @@ const cycleRange = ((num) => {
 const budgetChangeText = ((value) => {
     advPrice.removeClass('advert-price_infinity');
     if (/^[0-9]+$/.test(value)) {
-        cycleRange((value - 50) / 50);
+        cycleRange((parseInt(value) - 50) / 50);
         $('.advert-graph__price').html(value + ' 000 ₽');
         changeBudget(value);
     } else if (value === '1 млн') {
