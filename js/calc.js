@@ -1,8 +1,7 @@
 'use strict';
 let cities = [];
-$.getJSON('region.json', function(data) {
+$.getJSON('region.json', function (data) {
     cities = data;
-    console.log(cities);
 });
 
 let numElem = 1;
@@ -16,7 +15,7 @@ function debounce(func, wait, immediate) {
         const context = this;
         const args = arguments;
 
-        const later = function() {
+        const later = function () {
             timeout = null;
             if (!immediate) func.apply(context, args);
         };
@@ -31,10 +30,10 @@ function debounce(func, wait, immediate) {
     };
 };
 
-const getPriceOptions = (()=>{
+const getPriceOptions = (() => {
     priceOptions = 0;
-    $('.advert-ability:not(.advert-ability_active) input:checked').each((key, item)=>{
-        if(item.closest('.advert-ability').dataset.price && !item.closest('advert-ability_active'))
+    $('.advert-ability:not(.advert-ability_active) input:checked').each((key, item) => {
+        if (item.closest('.advert-ability').dataset.price && !item.closest('advert-ability_active'))
             priceOptions += parseInt(item.closest('.advert-ability').dataset.price);
     });
 });
@@ -52,40 +51,40 @@ const cycleRange = ((num) => {
     }
 });
 
-// Фильтрация по городам
-// const filterCities = debounce(function () {
-//     const inpWord = this.value;
-//     let allLi = $(this.nextElementSibling).find('li');
-//     const allParent = $(this.nextElementSibling).find('li.advert-popup__parent');
-//     if (this.value !== '') {
-//         allLi.css('display', function () {
-//             let classRes = '';
-//             const hasWord = this.querySelector('input').value.toLowerCase().indexOf(inpWord.toLowerCase());
-//             if (hasWord !== -1) {
-//                 classRes = 'block';
-//             } else {
-//                 classRes = 'none'
-//             }
-//             const liParent = this.parentElement;
-//             if(liParent.previousElementSibling) {
-//                 if (liParent.previousElementSibling.classList.contains('advert-popup__parent') && classRes === 'block') {
-//                     liParent.previousElementSibling.style.display = 'block';
-//                     liParent.previousElementSibling.classList.add('show');
-//                     liParent.style.display = 'block';
-//                 }
-//             }
-//             return classRes;
-//         });
-//     } else {
-//         allLi.css('display', 'block');
-//         allParent.next().css('display', 'none');
-//     }
-// }, 1000);
+//Фильтрация по городам
+const filterCities = debounce(function () {
+    const inpWord = this.value;
+    let allLi = $(this.nextElementSibling).find('li');
+    const allParent = $(this.nextElementSibling).find('li.advert-popup__parent');
+    if (this.value !== '' && this.value.length>=3) {
+        allLi.css('display', function () {
+            let classRes = '';
+            const hasWord = this.querySelector('input').value.toLowerCase().indexOf(inpWord.toLowerCase());
+            if (hasWord !== -1) {
+                classRes = 'block';
+            } else {
+                classRes = 'none'
+            }
+            const liParent = this.parentElement;
+            if(liParent.previousElementSibling) {
+                if (liParent.previousElementSibling.classList.contains('advert-popup__parent') && classRes === 'block') {
+                    liParent.previousElementSibling.style.display = 'block';
+                    liParent.previousElementSibling.classList.add('show');
+                    liParent.style.display = 'block';
+                }
+            }
+            return classRes;
+        });
+    } else {
+        allLi.css('display', 'block');
+        allParent.next().css('display', 'none');
+    }
+}, 1000);
 
 const printCities = ((modal, cityArr) => {
     modal.classList.add('advert-popup_load');
     const contElem = modal.querySelector('.advert-popup__cont');
-    // contElem.previousElementSibling.addEventListener('keyup', filterCities);
+    contElem.previousElementSibling.addEventListener('keyup', filterCities);
     let domElems = document.createElement('ul');
     domElems.classList.add('advert-popup__ul');
     const printFn = ((thisParent, arr) => {
@@ -104,7 +103,7 @@ const printCities = ((modal, cityArr) => {
                 printFn(newParent, item.areas)
             }
             thisParent.appendChild(liElem);
-            if(newParent)
+            if (newParent)
                 thisParent.appendChild(newParent);
         });
     });
@@ -115,8 +114,8 @@ const printCities = ((modal, cityArr) => {
 const getPriceDev = (() => {
     let countCompany = 0;
     let activeRS = $('.advert-checkbox input[data-dev]:checked').length;
-    $('.advert-collection').each((key, item)=>{
-        if(item.querySelectorAll('input[data-dev]:checked').length>0) {
+    $('.advert-collection').each((key, item) => {
+        if (item.querySelectorAll('input[data-dev]:checked').length > 0) {
             countCompany++;
         }
     });
@@ -126,9 +125,31 @@ const getPriceDev = (() => {
 
 const getPriceSev = (() => {
     getPriceOptions();
+    let obCount = {
+        1: 0,
+        2: 0,
+        3: 0,
+        4: 0,
+    }
+    let price = 0;
     let countAdvAll = $('.advert-collections').find('input:checked').length;
     let serResult = Math.round(((1 - (numElem - 1) * 0.1) * numElem * countAdvAll * 20000) + (priceOptions * numElem) - (0.01 * budget)) + ' ₽';
     $('.js-price-serv').html(serResult);
+
+    let elemAr = [];
+    let countAdvAllNew = $('.advert-collections .advert-collection');
+    countAdvAllNew.each((key, item) => {
+        elemAr.push($(item).find('input:checked'))
+    });
+    // console.log(elemAr);
+
+    elemAr.forEach((res) => {
+        console.log(res);
+        obCount[res.length]++;
+        // console.log(reg);
+    });
+    console.log(obCount);
+
 });
 $(".js-range-slider").ionRangeSlider({
     from: 2,
@@ -245,15 +266,15 @@ $('.advert-calc').on('click', (e) => {
     if (e.target.classList.contains('advert-delete-js') && e.target.closest('.can-delete')) {
         numElem--;
         e.target.closest('.advert-collections').removeChild(e.target.closest('.advert-collection'));
-        if($('.advert-collection').length === 1) {
+        if ($('.advert-collection').length === 1) {
             $('.advert-collections').removeClass('can-delete');
         }
         getPriceDev();
         getPriceSev();
     }
     // минимум 1 инпут
-    if(e.target.closest('.advert-checkbox')) {
-        if(e.target.closest('.advert-calc__checkbox').querySelectorAll('input:checked').length===1 && e.target.closest('.advert-checkbox').querySelector('input').checked) {
+    if (e.target.closest('.advert-checkbox')) {
+        if (e.target.closest('.advert-calc__checkbox').querySelectorAll('input:checked').length === 1 && e.target.closest('.advert-checkbox').querySelector('input').checked) {
             e.preventDefault();
         } else {
             e.target.closest('.advert-checkbox').querySelector('input').checked = !e.target.closest('.advert-checkbox').querySelector('input').checked;
@@ -261,14 +282,14 @@ $('.advert-calc').on('click', (e) => {
             getPriceSev();
         }
     }
-    if(e.target.tagName==='SPAN' && e.target.closest('.advert-popup__ul')) {
+    if (e.target.tagName === 'SPAN' && e.target.closest('.advert-popup__ul')) {
         e.target.previousElementSibling.checked = !e.target.previousElementSibling.checked;
-        if(e.target.parentNode.classList.contains('advert-popup__parent')) {
+        if (e.target.parentNode.classList.contains('advert-popup__parent')) {
             $(e.target.parentNode.nextElementSibling.querySelectorAll('input')).prop('checked', e.target.previousElementSibling.checked);
         }
     }
-    if(e.target.tagName==='SPAN' && e.target.parentNode.classList.contains('advert-popup__parent') || e.target.classList.contains('advert-popup__arrow')) {
-        if(e.target.tagName==='SPAN') {
+    if (e.target.tagName === 'SPAN' && e.target.parentNode.classList.contains('advert-popup__parent') || e.target.classList.contains('advert-popup__arrow')) {
+        if (e.target.tagName === 'SPAN') {
             e.target.parentNode.classList.add('show');
             $(e.target.parentNode.nextElementSibling).slideDown();
         } else {
@@ -303,9 +324,9 @@ $('.advert-calc').on('click', (e) => {
     }
 });
 
-advPrice.on('click', (e)=>{
-    if(e.target.closest('.advert-ability') && e.target.closest('.advert-ability').querySelector('input') && e.target.closest('.advert-ability').dataset.need!=='1000') {
-        if(e.target.closest('.advert-ability').dataset.need>50 && !e.target.closest('.advert-ability').classList.contains('advert-ability_active')) {
+advPrice.on('click', (e) => {
+    if (e.target.closest('.advert-ability') && e.target.closest('.advert-ability').querySelector('input') && e.target.closest('.advert-ability').dataset.need !== '1000') {
+        if (e.target.closest('.advert-ability').dataset.need > 50 && !e.target.closest('.advert-ability').classList.contains('advert-ability_active')) {
             e.target.closest('.advert-ability').querySelector('input').checked = !e.target.closest('.advert-ability').querySelector('input').checked;
             getPriceSev();
         }
