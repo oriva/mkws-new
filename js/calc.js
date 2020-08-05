@@ -8,8 +8,28 @@ let numElem = 1;
 let budget = 0;
 let priceOptions = 0;
 
-const testBudget = ((rs, theme)=>{
-    console.log('Кол-во рс: ' + rs + '; тематик: ' + theme + '; Бюджет: ' + Math.round(((1 - (theme - 1) * 0.1) * theme * rs * 20000) + (priceOptions * theme) - (0.01 * budget)));
+const testBudgetSev = ((rs, theme)=>{
+    console.log(
+        'Кол-во рс: ' +
+        rs +
+        '; тематик: ' +
+        theme +
+        '; Бюджет: ' +
+        budget +
+        '; Стоимость за опции: ' +
+        priceOptions +
+        '; Стоимость обслуживания: ' +
+        Math.round(((1 - (theme - 1) * 0.1) * theme * rs * 20000) + (priceOptions * theme) - (0.01 * budget))
+    );
+});
+
+const testBudgetDev = ((rs, theme)=>{
+    console.log('Кол-во рс: ' +
+        rs +
+        '; тематик: ' +
+        theme +
+        '; Стоимость разработки: ' +
+        Math.round(((1 - (theme - 1) * 0.1) * theme * rs * 25000)));
 });
 
 function debounce(func, wait, immediate) {
@@ -116,15 +136,28 @@ const printCities = ((modal, cityArr) => {
     contElem.appendChild(domElems);
 });
 const getPriceDev = (() => {
-    let countCompany = 0;
-    let activeRS = $('.advert-checkbox input[data-dev]:checked').length;
-    $('.advert-collection').each((key, item) => {
-        if (item.querySelectorAll('input[data-dev]:checked').length > 0) {
-            countCompany++;
-        }
+    let obCount = {
+        1: 0,
+        2: 0,
+        3: 0,
+        4: 0,
+    };
+    let price = 0;
+    let elemAr = [];
+    let countAdvAllNew = $('.advert-collections .advert-collection');
+    countAdvAllNew.each((key, item) => {
+        elemAr.push($(item).find('input[data-dev]:checked'))
     });
-    let devResult = Math.round((1 - (countCompany - 1) * 0.1) * activeRS * 25000);
-    $('.js-price-dev').html(devResult + ' ₽');
+    elemAr.forEach((res) => {
+        obCount[res.length]++;
+    });
+    for (let key in obCount) {
+        if (obCount[key] > 0) {
+            // testBudgetDev(obCount[key], key);
+            price += Math.round(((1 - (key - 1) * 0.1) * key * obCount[key] * 25000))
+        }
+    }
+    $('.js-price-dev').html(price + ' ₽');
 });
 
 const getPriceSev = (() => {
@@ -144,18 +177,15 @@ const getPriceSev = (() => {
     });
 
     elemAr.forEach((res) => {
-        console.log(res);
         obCount[res.length]++;
     });
     for (let key in obCount) {
         if (obCount[key] > 0) {
-            testBudget(obCount[key], key);
+            testBudgetSev(obCount[key], key);
             price += Math.round(((1 - (key - 1) * 0.1) * key * obCount[key] * 20000) + (priceOptions * key) - (0.01 * budget))
         }
     }
     $('.js-price-serv').html(price + ' ₽');
-    console.log(price);
-
 });
 $(".js-range-slider").ionRangeSlider({
     from: 2,
@@ -189,8 +219,10 @@ $(".js-range-slider").ionRangeSlider({
         if (typeof data.from_value === 'number') {
             cycleRange((data.from_value - 50) / 50);
             $('.advert-graph__price').html(data.from_value + ' 000 ₽');
-            if (data.from_value >= 150)
+            if (data.from_value > 150)
                 budget = data.from_value * 1000;
+            else
+                budget = 0;
         } else if (data.from_value === '1 млн') {
             elem50.addClass('advert-ability_active');
             $('.advert-price .advert-ability[data-need] input').prop('checked', true);
@@ -203,7 +235,10 @@ $(".js-range-slider").ionRangeSlider({
         getPriceSev();
     },
     onStart: function (data) {
-        budget = data.from_value * 1000;
+        if (data.from_value > 150)
+            budget = data.from_value * 1000;
+        else
+            budget = 0;
     }
 });
 $('#advert-add-theme').on('click', () => {
@@ -226,7 +261,7 @@ $('#advert-add-theme').on('click', () => {
         '</div>' +
         '<div class="advert-city-block">' +
         '<div class="advert-city-block__in">' +
-        '<span class="advert-city-block__city">Санкт-Петербург и ЛО</span>' +
+        '<span class="advert-city-block__city">Выбор региона</span>' +
         '<div class="advert-popup advert-popup_hide">' +
         '<span class="advert-popup__title">Выберите регион</span>' +
         '<input type="text" class="advert-popup__filter" placeholder="Найти регион">' +
