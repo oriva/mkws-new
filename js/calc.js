@@ -8,6 +8,10 @@ let numElem = 1;
 let budget = 0;
 let priceOptions = 0;
 
+const testBudget = ((rs, theme)=>{
+    console.log('Кол-во рс: ' + rs + '; тематик: ' + theme + '; Бюджет: ' + Math.round(((1 - (theme - 1) * 0.1) * theme * rs * 20000) + (priceOptions * theme) - (0.01 * budget)));
+});
+
 function debounce(func, wait, immediate) {
     let timeout;
 
@@ -56,7 +60,7 @@ const filterCities = debounce(function () {
     const inpWord = this.value;
     let allLi = $(this.nextElementSibling).find('li');
     const allParent = $(this.nextElementSibling).find('li.advert-popup__parent');
-    if (this.value !== '' && this.value.length>=3) {
+    if (this.value !== '' && this.value.length >= 3) {
         allLi.css('display', function () {
             let classRes = '';
             const hasWord = this.querySelector('input').value.toLowerCase().indexOf(inpWord.toLowerCase());
@@ -66,7 +70,7 @@ const filterCities = debounce(function () {
                 classRes = 'none'
             }
             const liParent = this.parentElement;
-            if(liParent.previousElementSibling) {
+            if (liParent.previousElementSibling) {
                 if (liParent.previousElementSibling.classList.contains('advert-popup__parent') && classRes === 'block') {
                     liParent.previousElementSibling.style.display = 'block';
                     liParent.previousElementSibling.classList.add('show');
@@ -130,25 +134,27 @@ const getPriceSev = (() => {
         2: 0,
         3: 0,
         4: 0,
-    }
+    };
     let price = 0;
-    let countAdvAll = $('.advert-collections').find('input:checked').length;
-    let serResult = Math.round(((1 - (numElem - 1) * 0.1) * numElem * countAdvAll * 20000) + (priceOptions * numElem) - (0.01 * budget)) + ' ₽';
-    $('.js-price-serv').html(serResult);
 
     let elemAr = [];
     let countAdvAllNew = $('.advert-collections .advert-collection');
     countAdvAllNew.each((key, item) => {
         elemAr.push($(item).find('input:checked'))
     });
-    // console.log(elemAr);
 
     elemAr.forEach((res) => {
         console.log(res);
         obCount[res.length]++;
-        // console.log(reg);
     });
-    console.log(obCount);
+    for (let key in obCount) {
+        if (obCount[key] > 0) {
+            testBudget(obCount[key], key);
+            price += Math.round(((1 - (key - 1) * 0.1) * key * obCount[key] * 20000) + (priceOptions * key) - (0.01 * budget))
+        }
+    }
+    $('.js-price-serv').html(price + ' ₽');
+    console.log(price);
 
 });
 $(".js-range-slider").ionRangeSlider({
