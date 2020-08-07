@@ -10,7 +10,7 @@ input {
   position:      relative;
   input {
     display:          block;
-    margin:           10px auto;
+    margin:           10px 0;
     background-color: transparent;
     padding:          10px 5px;
     width:            98%;
@@ -47,7 +47,7 @@ input {
     color:                 #9E9E9E;
     position:              absolute;
     pointer-events:        none;
-    left:                  5px;
+    left:                  0;
     top:                   10px;
     -webkit-transition:    0.3s ease all;
     transition:            0.3s ease all;

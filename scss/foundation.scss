@@ -1,5 +1,7 @@
 body {
   margin: 0;
+  -ms-overflow-x: hidden;
+  overflow-x: hidden;
 }
 
 h2 {
