@@ -1,0 +1,12 @@
+{
+	"version": 3,
+	"file": "../scss/foundation.css",
+	"sources": [
+		"../scss/foundation.scss"
+	],
+	"sourcesContent": [
+		"body {\n  margin: 0;\n}\n\nh2 {\n  margin: 0;\n}\n\n*, ::after, ::before {\n  box-sizing: border-box;\n}\n\ninput, input:focus {\n  box-shadow: none;\n  outline: none;\n  margin: 0;\n}\n\nul, li {\n  list-style: none;\n  margin: 0;\n  padding: 0;\n}"
+	],
+	"mappings": ";AAAA,AAAA,IAAI,CAAC;EACH,MAAM,EAAE,CAAE;CACX;;;AAED,AAAA,EAAE,CAAC;EACD,MAAM,EAAE,CAAE;CACX;;;AAED,AAAA,CAAC,EAAE,AAAA,OAAO,EAAE,AAAA,QAAQ,CAAC;EACnB,UAAU,EAAE,UAAW;CACxB;;;AAED,AAAA,KAAK,EAAE,AAAK,KAAA,AAAA,MAAM,CAAC;EACjB,UAAU,EAAE,IAAK;EACjB,OAAO,EAAE,IAAK;EACd,MAAM,EAAE,CAAE;CACX;;;AAED,AAAA,EAAE,EAAE,AAAA,EAAE,CAAC;EACL,UAAU,EAAE,IAAK;EACjB,MAAM,EAAE,CAAE;EACV,OAAO,EAAE,CAAE;CACZ",
+	"names": []
+}

@@ -1,1 +1,30 @@
-body{margin:0}h2{margin:0}*,::after,::before{box-sizing:border-box}input,input:focus{box-shadow:none;outline:none}ul,li{list-style:none;margin:0;padding:0}
+/* line 1, /Users/alexanderDev/Desktop/sites/matus/mkws/scss/foundation.scss */
+body {
+  margin: 0;
+}
+
+/* line 5, /Users/alexanderDev/Desktop/sites/matus/mkws/scss/foundation.scss */
+h2 {
+  margin: 0;
+}
+
+/* line 9, /Users/alexanderDev/Desktop/sites/matus/mkws/scss/foundation.scss */
+*, ::after, ::before {
+  box-sizing: border-box;
+}
+
+/* line 13, /Users/alexanderDev/Desktop/sites/matus/mkws/scss/foundation.scss */
+input, input:focus {
+  box-shadow: none;
+  outline: none;
+  margin: 0;
+}
+
+/* line 19, /Users/alexanderDev/Desktop/sites/matus/mkws/scss/foundation.scss */
+ul, li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/*# sourceMappingURL=../css/foundation.map */

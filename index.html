@@ -12,7 +12,7 @@
 </head>
 <body>
 <div class="Blocks">
-	<div class="advert-calc">
+	<div class="advert-calc advert-padding">
 		<div class="advert-calc__text-block">
 			<h2 class="heading-middle">Калькулятор тарифа</h2>
 			<div class="get-info" data-cont=""></div>
@@ -36,7 +36,7 @@
 							<span class="advert-city-block__city">Выбор региона</span>
 							<div class="advert-popup advert-popup_hide">
 								<span class="advert-popup__title">Выберите регион</span>
-								<input type="text" class="advert-popup__filter" placeholder="Найти регион">
+								<input type="text" class="advert-popup__filter" placeholder="Найти регион (мин. 3 символа)">
 								<div class="advert-popup__cont">
 
 								</div>
@@ -86,13 +86,16 @@
 					<div class="get-info" data-cont=""></div>
 				</div>
 				<div class="advert-graph">
-					<div class="advert-graph__price advert-text-green">150 000 ₽</div>
+					<div class="advert-graph__price advert-text-green">50 000 ₽</div>
 					<input type="text" class="js-range-slider" name="my_range" value=""/>
 				</div>
 			</div>
 		</div>
 	</div>
-	<div class="advert-price">
+	<div class="advert-price advert-padding">
+		<div class="advert-price__bg">
+			<span>Для особых клиентов — расширенные эксклюзивные условия!</span>
+		</div>
 		<div class="advert-price__not-infinity">
 			<div class="advert-price__col">
 				<span class="advert-calc__title">Стоимость</span>
@@ -114,16 +117,18 @@
 				</div>
 				<div class="advert-price__price vam-child">
 					<span class="advert-text-green js-price-dev">25000 ₽</span>
-					<div class="advert-checkbox-info">
-						<div class="advert-checkbox-block">
-							<input type="checkbox" id="have-rk">
-							<label for="have-rk">
-								<img src="img/success-purple.svg" alt="">
-							</label>
-						</div>
-						<span class="advert-checkbox-block__text vam-child">Запросить скидку для доработки действующей РК.<div
-								class="get-info" data-cont="Скидка может быть не применена при большом объеме переработки РК"></div></span>
+				</div>
+			</div>
+			<div class="advert-price__col advert-price__offset">
+				<div class="advert-checkbox-info">
+					<div class="advert-checkbox-block">
+						<input type="checkbox" id="have-rk">
+						<label for="have-rk">
+							<img src="img/success-purple.svg" alt="">
+						</label>
 					</div>
+					<span class="advert-checkbox-block__text vam-child">Запросить скидку для доработки действующей РК.<div
+							class="get-info" data-cont="Скидка может быть не применена при большом объеме переработки РК"></div></span>
 				</div>
 			</div>
 			<div class="vam-child w-100 advert-ability-title">
@@ -174,16 +179,16 @@
 					<div class="get-info"
 						 data-cont="автоматическая корректировка ставок по ключевым фразам в соответствии с показателями их эффективности"></div>
 				</div>
-			</div>
-			<div class="advert-price__col">
-				<div class="advert-ability advert-ability_active vam-child" data-need="100" data-price="3000">
-					<input name="advert-ability" type="checkbox" checked>
+				<div class="advert-ability vam-child" data-need="100" data-price="3000">
+					<input name="advert-ability" type="checkbox">
 					<span class="advert-calc__sub-title">Еженедельный отчет вовлеченности</span>
 					<div class="get-info"
 						 data-cont="отчет для понимания уровня заинтересованности посетителей рекламными объявлениями и тем материалом, который размещен на вашем сайте"></div>
 				</div>
-				<div class="advert-ability advert-ability_active vam-child" data-need="150" data-price="3000">
-					<input name="advert-ability" type="checkbox" checked>
+			</div>
+			<div class="advert-price__col">
+				<div class="advert-ability vam-child" data-need="150" data-price="3000">
+					<input name="advert-ability" type="checkbox">
 					<span class="advert-calc__sub-title">Анализ спроса и предложения за месяц</span>
 					<div class="get-info"
 						 data-cont="отчет для понимания трендов и ситуации на рынке по 1-ой тематике"></div>
@@ -236,13 +241,13 @@
 					<div class="get-info"
 						 data-cont="гибкий формат объявлений подстраивающийся в зависимости от мест размещения и условий показа"></div>
 				</div>
-			</div>
-			<div class="advert-price__col">
 				<div class="advert-ability vam-child" data-need="600" data-price="10000">
 					<input name="advert-ability" type="checkbox">
 					<span class="advert-calc__sub-title">Настройка и ведение РК с баннером на поиске Яндекса</span>
 					<div class="get-info" data-cont="баннер на первой странице поисковой выдачи Яндекса"></div>
 				</div>
+			</div>
+			<div class="advert-price__col">
 				<div class="advert-ability vam-child" data-need="650" data-price="15000">
 					<input name="advert-ability" type="checkbox">
 					<span class="advert-calc__sub-title">Глубокий анализ данных отчетов Яндекс.Метрики и Гугл Аналитикс</span>
@@ -291,8 +296,8 @@
 				</div>
 			</div>
 		</div>
-		<div class="advert-price__bg">
-			<span>Для особых клиентов — расширенные эксклюзивные условия!</span>
+		<div class="advert-inputs">
+
 		</div>
 		<div class="advert-button">
 			<button>Оставить заявку</button>

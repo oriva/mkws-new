@@ -103,9 +103,15 @@ body {
   }
 }
 
+.advert-padding {
+  padding-left:  65px;
+  padding-right: 65px;
+}
+
 .advert-calc {
-  border:  1px solid #E0E0E0;
-  padding: 72px 65px;
+  border:         1px solid #E0E0E0;
+  padding-top:    72px;
+  padding-bottom: 72px;
   &__title {
     font-size:   22px;
     font-weight: bold;
@@ -125,10 +131,13 @@ body {
     margin-top: 42px;
   }
   &__checkbox {
-    flex:      1;
-    width:     100%;
-    display:   flex;
-    flex-wrap: wrap;
+    -ms-flex-preferred-size: 0;
+    flex-basis:              0;
+    -ms-flex-positive:       1;
+    flex-grow:               1;
+    max-width:               100%;
+    display:                 flex;
+    flex-wrap:               wrap;
   }
 }
 
@@ -172,18 +181,18 @@ body {
 }
 
 .can-delete .advert-delete-block {
-  opacity: 1;
+  opacity:        1;
   pointer-events: all;
 }
 
 .advert-delete-block {
-  flex-shrink: 1;
-  font-weight: bold;
-  font-size: 18px;
-  color: #E2574C;
-  opacity: 0;
+  flex-shrink:    1;
+  font-weight:    bold;
+  font-size:      18px;
+  color:          #E2574C;
+  opacity:        0;
   pointer-events: none;
-  transition: .2s;
+  transition:     .2s;
   span {
     cursor: pointer;
   }
@@ -198,7 +207,7 @@ body {
   }
   &__city {
     position: relative;
-    cursor: pointer;
+    cursor:   pointer;
     &::after {
       content:          '';
       position:         absolute;
@@ -218,7 +227,7 @@ body {
   right:            0;
   top:              calc(100% + 15px);
   background-color: #FFF;
-  padding:          66px 72px;
+  padding:          65px 72px;
   box-shadow:       -1px 3px 7px rgba(0, 0, 0, 0.2), 1px 0 7px rgba(0, 0, 0, 0.2), 0 3px 4px rgba(0, 0, 0, 0.25);
   opacity:          0;
   transition:       .3s;
@@ -243,6 +252,7 @@ body {
   }
   &__cont {
     border:     1px solid #E0E0E0;
+    border-top: 0;
     padding:    25px 27px;
     font-size:  18px;
     max-height: 400px;
@@ -380,7 +390,8 @@ body {
   position:         relative;
   background-color: #151515;
   color:            #FFF;
-  padding:          72px 65px 34px;
+  padding-top:      72px;
+  padding-bottom:   34px;
   &__not-infinity {
     display:   flex;
     flex-wrap: wrap;
@@ -389,6 +400,9 @@ body {
     .advert-price__bg {
       opacity: 1;
     }
+  }
+  &__offset {
+    margin-left: 66.66%;
   }
   &__bg {
     display:          flex;
@@ -475,13 +489,11 @@ body {
 }
 
 .advert-ability {
-  position:       relative;
-  padding-top:    10px;
-  padding-bottom: 10px;
-  padding-left:   40px;
-  line-height:    1.4;
-  cursor:         pointer;
-  transition:     .3s;
+  position:    relative;
+  padding:     10px 40px;
+  line-height: 1.4;
+  cursor:      pointer;
+  transition:  .3s;
   &:hover {
     color: rgba(255, 255, 255, 0.77);
   }
@@ -495,36 +507,42 @@ body {
         content:             '';
         position:            absolute;
         left:                0;
-        top:                 0;
-        height:              100%;
-        width:               23px;
+        top:                 50%;
+        height:              27px;
+        width:               27px;
         background-position: center center;
         background-repeat:   no-repeat;
         background-size:     contain;
         transition:          .3s;
+        transform:           translateY(-50%);
       }
       &::after {
-        background-image: url('../img/cross-grey.svg');
+        border: 1px solid #FFF;
       }
       &::before {
         background-image: url('../img/success-purple.svg');
-        transform:        scale(0);
+        left: 2px;
+        width: 23px;
+        transform:        translateY(-50%) scale(0);
       }
     }
     &:checked {
       & ~ span {
-        &::after {
-          transform: scale(0);
-        }
         &::before {
-          transform: scale(1);
+          transform: translateY(-50%) scale(1);
         }
       }
     }
   }
 
   &_active {
-
+    input {
+      & ~ span {
+        &::after {
+          opacity: 0;
+        }
+      }
+    }
   }
 }
 
@@ -550,5 +568,131 @@ body {
   margin-top: 50px;
   &:first-child {
     margin-top: 0;
+  }
+}
+
+@media (max-width: 1400px) {
+  .advert-theme-block {
+    flex: 2;
+  }
+  .advert-calc {
+    &__text-col {
+      flex:          0 0 100%;
+      margin-bottom: 20px;
+      margin-right:  0;
+    }
+  }
+}
+
+@media (max-width: 992px) {
+  .advert-checkbox {
+    flex:          0 0 50%;
+    margin-bottom: 10px;
+    &:nth-child(even) {
+      padding-right: 0;
+    }
+  }
+  .advert-popup {
+    width:   550px;
+    padding: 26px 32px;
+    &__title {
+      margin-bottom: 15px;
+    }
+    &__cont {
+      padding: 15px 20px;
+    }
+  }
+  .advert-padding {
+    padding-left:  34px;
+    padding-right: 34px;
+  }
+  .advert-theme-block {
+    padding-right: 60px;
+  }
+  .advert-price {
+    padding-top: 45px;
+    &__not-infinity {
+      .advert-price__col {
+        display:     flex;
+        flex-wrap:   wrap;
+        flex:        0 0 100%;
+        max-width:   100%;
+        align-items: center;
+        &.advert-price__offset {
+          margin-left: 50%;
+          flex:        0 0 50%;
+          width:       50%;
+        }
+        .advert-ability {
+          flex:      0 0 50%;
+          max-width: 50%;
+        }
+        &:nth-child(-n+3) {
+          flex:      0 0 50%;
+          max-width: 50%;
+          & > * {
+            flex:  0 0 100%;
+            width: 100%;
+          }
+        }
+        &:first-child {
+          flex:      0 0 100%;
+          max-width: 100%;
+          .advert-calc__title {
+            display:       block;
+            margin-bottom: 15px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .advert-ability-title {
+    margin-top: 30px;
+  }
+  .heading-middle {
+    font-size: 35px;
+  }
+  .advert-collection {
+    .advert-theme-block {
+      flex:          0 0 100%;
+      margin-bottom: 20px;
+      padding-right: 0;
+    }
+  }
+  .input-group {
+    input {
+      margin-left:  0;
+      margin-right: 0;
+    }
+    label {
+      left: 0;
+    }
+  }
+  .advert-add-system {
+    padding-top: 20px;
+  }
+  .advert-price__not-infinity .advert-price__col .advert-ability {
+    flex:      0 0 100%;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .advert-checkbox {
+    flex:          0 0 100%;
+    max-width:     100%;
+    padding-right: 0;
+  }
+  .advert-price__not-infinity .advert-price__col.advert-price__offset {
+    margin-left: 0;
+    flex:        0 0 100%;
+    max-width:   100%;
+  }
+  .advert-padding {
+    padding-left:  20px;
+    padding-right: 20px;
   }
 }
