@@ -1,8 +1,8 @@
 {
 	"version": 3,
-	"file": "../scss/index.css",
+	"file": "../scss/context.css",
 	"sources": [
-		"../scss/index.scss",
+		"../scss/context.scss",
 		"../scss/_input.scss"
 	],
 	"sourcesContent": [

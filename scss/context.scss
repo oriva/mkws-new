@@ -114,7 +114,6 @@ body {
   border:         1px solid #E0E0E0;
   padding-top:    72px;
   padding-bottom: 72px;
-  overflow: hidden;
   &__title {
     font-size:   22px;
     font-weight: bold;
@@ -283,7 +282,7 @@ body {
         display:             block;
         width:               10px;
         height:              10px;
-        background-image:    url('../img/cities-arrow.svg');
+        background-image:    url('../images/cities-arrow.svg');
         background-repeat:   no-repeat;
         background-size:     contain;
         background-position: center;
@@ -395,6 +394,7 @@ body {
   color:            #FFF;
   padding-top:      72px;
   padding-bottom:   34px;
+  margin-bottom: 120px;
   &__not-infinity {
     display:   flex;
     flex-wrap: wrap;
@@ -524,7 +524,7 @@ body {
         border: 1px solid #FFF;
       }
       &::before {
-        background-image: url('../img/success-purple.svg');
+        background-image: url('../images/success-purple.svg');
         left: 2px;
         width: 23px;
         transform:        translateY(-50%) scale(0);
@@ -673,6 +673,10 @@ body {
 }
 
 @media (max-width: 768px) {
+  .advert-popup {
+    left: 0;
+    max-width: 80vw;
+  }
   .advert-ability-title {
     margin-top: 30px;
   }
