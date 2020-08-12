@@ -43,8 +43,6 @@ function debounce(func, wait, immediate) {
 var getPriceOptions = function getPriceOptions() {
     priceOptions = 0;
     $('.advert-ability:not(.advert-ability_active) input:checked').each(function (key, item) {
-        console.log($(item).closest('.advert-ability').data('price'));
-        console.log($(item).closest('advert-ability_active').length===0);
         if ($(item).closest('.advert-ability').data('price') && $(item).closest('advert-ability_active').length===0) priceOptions += parseInt($(item).closest('.advert-ability').data('price'));
     });
 };
@@ -127,19 +125,19 @@ var printCities = function printCities(modal, cityArr) {
     var domElems = document.createElement('ul');
     domElems.classList.add('advert-popup__ul');
 
-    var printFn = function printFn(thisParent, arr) {
+    var printFn = function printFn(thisParent, arr, isLast=false) {
         arr.forEach(function (item) {
             var newParent = '';
             var liElem = document.createElement('li');
             liElem.innerHTML = '' + '<input name="advert-popup" type="checkbox" value="' + item.name + '">' + '<span>' + item.name + '</span>';
 
-            if (item.areas.length > 0) {
+            if (item.areas.length > 0&&!isLast) {
                 var arrow = document.createElement('div');
                 arrow.classList.add('advert-popup__arrow');
                 liElem.classList.add('advert-popup__parent');
                 $(liElem).prepend(arrow);
                 newParent = document.createElement('li');
-                printFn(newParent, item.areas);
+                printFn(newParent, item.areas, true);
             }
 
             thisParent.appendChild(liElem);
@@ -155,13 +153,11 @@ var printCities = function printCities(modal, cityArr) {
 var getPriceDev = function getPriceDev() {
     var obCount = {
         1: 0,
-        2: 0,
-        3: 0,
-        4: 0
+        2: 0
     };
     var price = 0;
     var elemAr = [];
-    var countAdvAllNew = $('.advert-collections .advert-collection');
+    var countAdvAllNew = $('.advert-collections .advert-calc__checkbox');
     countAdvAllNew.each(function (key, item) {
         elemAr.push($(item).find('input[data-dev]:checked'));
     });
@@ -171,11 +167,11 @@ var getPriceDev = function getPriceDev() {
 
     for (var key in obCount) {
         if (obCount[key] > 0) {
-            // testBudgetDev(obCount[key], key);
+            testBudgetDev(obCount[key], key);
             price += Math.round((1 - (key - 1) * 0.1) * key * obCount[key] * 25000);
         }
     }
-
+    $('input[name=advert-dev]').val(price);
     $('.js-price-dev').html(price + ' ₽');
 };
 
@@ -189,7 +185,7 @@ var getPriceSev = function getPriceSev() {
     };
     var price = 0;
     var elemAr = [];
-    var countAdvAllNew = $('.advert-collections .advert-collection');
+    var countAdvAllNew = $('.advert-collections .advert-calc__checkbox');
     countAdvAllNew.each(function (key, item) {
         elemAr.push($(item).find('input:checked'));
     });
@@ -199,11 +195,11 @@ var getPriceSev = function getPriceSev() {
 
     for (var key in obCount) {
         if (obCount[key] > 0) {
-            // testBudgetSev(obCount[key], key);
+            testBudgetSev(obCount[key], key);
             price += Math.round((1 - (key - 1) * 0.1) * key * obCount[key] * 20000 + priceOptions * obCount[key] - 0.01 * budget);
         }
     }
-
+    $('input[name=advert-serv]').val(price);
     $('.js-price-serv').html(price + ' ₽');
 };
 
@@ -227,7 +223,6 @@ $('#advert-add-theme').on('click', function () {
     var valueRange = $(".js-range-slider").data("ionRangeSlider").input.value;
     changeBudget(valueRange);
     budgetChangeText(valueRange);
-    console.log(valueRange);
     var collectElem = document.createElement('div');
     collectElem.classList.add('advert-collection');
     collectElem.innerHTML = '' + '<div class="row align-items-center">' + '<div class="advert-calc__text-col vam-child">' + '<span class="advert-calc__title">Название тематики</span>' + '<div class="get-info" data-info-id=""></div>' + '</div>' + '<div class="advert-theme-block">' + '<div class="input-group advert-theme-block__input">' + '<input type="text" class="input-group__input" name="theme-name" autocomplete="off" placeholder="-"' + '   required>' + '<span class="bar"></span>' + '<label>Введите название</label>' + '</div>' + '</div>' + '<div class="advert-city-block">' + '<div class="advert-city-block__in">' + '<span class="advert-city-block__city">Выбор региона</span>' + '<div class="advert-popup advert-popup_hide">' + '<span class="advert-popup__title">Выберите регион</span>' + '<input type="text" class="advert-popup__filter" placeholder="Найти регион (мин. 3 символа)">' + '<div class="advert-popup__cont">' + '</div>' + '</div>' + '</div>' + '</div>' + '<div class="advert-delete-block">' + '<span class="advert-delete-js">- Убрать</span>' + '</div>' + '</div>' + '<div class="row align-items-center advert-calc__second-block">' + '<div class="advert-calc__text-col vam-child">' + '<span class="advert-calc__title">Рекламная система</span>' + '<div class="get-info" data-info-id=""></div>' + '</div>' + '<div class="advert-calc__checkbox">' + '<div class="advert-checkbox">' + '<input class="advert-checkbox__input" type="checkbox" name="advert-system" value="Яндекс.Директ" data-dev="25000" checked>' + '<label for="yd_' + numElem + '">Яндекс.Директ</label>' + '</div>' + '<div class="advert-checkbox">' + '<input class="advert-checkbox__input" type="checkbox" name="advert-system" value="Google Ads" data-dev="25000">' + '<label for="google_' + numElem + '">Google Ads</label>' + '</div>' + '<div class="advert-checkbox">' + '<input class="advert-checkbox__input" type="checkbox" name="advert-system" value="VK">' + '<label for="vk_' + numElem + '">VK</label>' + '</div>' + '<div class="advert-checkbox">' + '<input class="advert-checkbox__input" type="checkbox" name="advert-system" value="Google Ads">' + '<label for="fb_' + numElem + '">Instagram + Facebook</label>' + '</div>' + '</div>' + '</div>';
@@ -263,13 +258,10 @@ $('.advert-calc').on('click', function (e) {
     }
 
     if (e.target.tagName === 'SPAN' && $(e.target).closest('.advert-popup__ul').length > 0) {
-        console.log($(e.target).prev().is(':checked'));
         $(e.target).prev().prop('checked', !$(e.target).prev().is(':checked'));
-        if (e.target.parentNode.classList.contains('advert-popup__parent')) {
-            // console.log($(e.target).prev());
-            // console.log($(e.target).prev().prop('checked'));
-            $(e.target.parentNode.nextElementSibling.querySelectorAll('input')).prop('checked', $(e.target).prev().is(':checked'));
-        }
+        // if (e.target.parentNode.classList.contains('advert-popup__parent')) {
+        //     $(e.target.parentNode.nextElementSibling.querySelectorAll('input')).prop('checked', $(e.target).prev().is(':checked'));
+        // }
     }
 
     if (e.target.tagName === 'SPAN' && e.target.parentNode.classList.contains('advert-popup__parent') || e.target.classList.contains('advert-popup__arrow')) {
@@ -310,7 +302,13 @@ $('.advert-calc').on('click', function (e) {
         }, 100);
 
         if (!elem.classList.contains('advert-popup_load')) {
-            printCities(elem, cities);
+            if (cities.length > 0) {
+                printCities(elem, cities);
+            } else {
+                setTimeout(function () {
+                    printCities(elem, cities);
+                }, 500);
+            }
         }
     }
 });
@@ -321,4 +319,68 @@ advPrice.on('click', function (e) {
             getPriceSev();
         }
     }
+});
+
+$('.js-calc-send').on('submit', function (e) {
+    e.preventDefault();
+    $('.advert-collection').each(function (key, item) {
+        var inputsTheme = $(item).find('input[name^=theme-name]');
+        var inputsChecked = $(item).find('input[name^=advert-system]');
+        var inputsCitiesCity = $(item).find('input[name^=advert-popup]:checked');
+
+        inputsTheme.each(function (i, input) {
+            let inpName = $(input).attr('name');
+            if(inpName!==undefined) {
+                if (inpName.indexOf('[')!==-1) {
+                    $(input).attr('name', inpName.substr(0, inpName.indexOf('[')));
+                }
+                $(input).attr('name', $(input).attr('name') + '[' + i + ']');
+            }
+        });
+        inputsChecked.each(function (i, input) {
+            let inpName = $(input).attr('name');
+            if (inpName !== undefined) {
+                if (inpName.indexOf('[') !== -1) {
+                    $(input).attr('name', inpName.substr(0, inpName.indexOf('[')));
+                }
+                $(input).attr('name', $(input).attr('name') + '[' + key + ']' + '[' + i + ']');
+            }
+        });
+        inputsCitiesCity.each(function (i, input) {
+            let inpName = $(input).attr('name');
+            if (inpName !== undefined) {
+                if (inpName.indexOf('[') !== -1) {
+                    $(input).attr('name', inpName.substr(0, inpName.indexOf('[')));
+                }
+                $(input).attr('name', $(input).attr('name') + '[' + key + ']' + '[' + i + ']');
+            }
+        });
+    });
+    var inputsAbility = $('.advert-price').find('.advert-ability.vam-child:not(.advert-ability_active) input:checked');
+    inputsAbility.each(function (i, input) {
+        let inpName = $(input).attr('name');
+        if(inpName!==undefined) {
+            if (inpName.indexOf('[')!==-1) {
+                $(input).attr('name', inpName.substr(0, inpName.indexOf('[')));
+            }
+            $(input).attr('name', $(input).attr('name') + '[' + i + ']');
+        }
+    });
+
+    var leadForm = $(this);
+    var formSerialize = $(this).serializeArray();
+    console.log('Send');
+    console.log(leadForm.serializeArray());
+    $.ajax({
+
+        url: leadForm.attr('action'),
+
+        data: leadForm.serialize(),
+
+        type: 'post',
+
+        success: function (data) {
+            console.log(data);
+        },
+    });
 });
